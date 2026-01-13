@@ -2,11 +2,16 @@ pipeline {
     agent {
         label 'maven-salve'
     }
+    environment {
+        PATH = "/opt/apache-maven-3.9.2/bin:$PATH"
+    }
 
     stages {
-        stage('git') {
+        stage('Build') {
             steps {
-                git branch: 'main', url: 'https://github.com/MohsinDevOps552/ci_cd_jenkins.git'
+                echo '----------- build started ----------'
+                sh 'mvn clean deploy -Dmaven.test.skip=true'
+                echo '----------- build completed ----------'
             }
         }
     }
