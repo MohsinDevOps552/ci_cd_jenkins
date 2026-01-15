@@ -2,8 +2,8 @@ pipeline {
     agent {
         label 'maven-salve'
     }
-    environment {
-        PATH = "/opt/apache-maven-3.9.2/bin:$PATH"
+    tools {
+        maven 'Maven-3.9.2'          // Jenkins tool name for Maven
     }
 
     stages {
@@ -16,12 +16,9 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            environment {
-                Scannerhome = tool 'Sonar Scanner'
-            }
             steps {
-                withSonarQubeEnv('SonarQub-server') {
-                    sh '$Scannerhome/bin/sonar-scanner'
+                withSonarQubeEnv('SonarQube-Server') {   // must match Jenkins global config
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
